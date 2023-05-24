@@ -40,11 +40,11 @@ class PayWithEsewaScreen extends StatelessWidget {
           final uri = Uri.parse(url);
           if (url.contains(config.successUrl) && uri.queryParameters.containsKey('refId')) {
             final refId = uri.queryParameters['refId'];
-            onSuccess(config, refId!);
+            onSuccess.call(config, refId!);
             return NavigationActionPolicy.ALLOW;
           } else if (url.contains(config.failureUrl) || url.contains('failure')) {
             final errorMessage = uri.queryParameters['error'];
-            onFailure(errorMessage ?? 'Sorry your request failed');
+            onFailure.call(errorMessage ?? 'Sorry your request failed');
             return NavigationActionPolicy.ALLOW;
           }
           return NavigationActionPolicy.ALLOW;
