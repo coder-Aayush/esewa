@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: const <Widget>[
             Text(
-              'Tao on the Floating Action Button to pay with Esewa',
+              'Tap on the Floating Action Button to pay with Esewa',
             ),
           ],
         ),
