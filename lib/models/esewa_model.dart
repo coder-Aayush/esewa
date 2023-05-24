@@ -1,3 +1,5 @@
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+
 abstract class EsewaConfigModel {
   final bool isLive;
 
@@ -73,17 +75,8 @@ abstract class EsewaConfigModel {
   /// Failure URL: a redirect URL of merchant application where customer will be redirected after FAILURE or PENDING transaction
   String get failureUrl;
 
-  Map<String, dynamic> get toUrl => {
-        'amt': amount,
-        'txAmt': taxAmount,
-        'psc': serviceCharge,
-        'pdc': deliveryCharge,
-        'tAmt': totalAmount,
-        'pid': productId,
-        'scd': merchantId,
-        'su': successUrl,
-        'fu': failureUrl,
-      };
+  /// URL request to be used in [InAppWebView]
+  Uri get uri => Uri.parse('${baseUrl}amt=$amount&txAmt=$taxAmount&psc=${serviceCharge ?? 0}&pdc=${deliveryCharge ?? 0}&tAmt=$totalAmount&pid=$productId&scd=$merchantId&su=$successUrl&fu=$failureUrl');
 }
 
 class EsewaSandboxModel extends EsewaConfigModel {

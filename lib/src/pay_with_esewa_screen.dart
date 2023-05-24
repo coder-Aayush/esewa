@@ -1,11 +1,12 @@
 import 'package:esewa/models/esewa_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 /// Typedef for callback function
 ///
-typedef EsewaSuccessCallback = void Function(EsewaConfigModel, String);
+typedef EsewaSuccessCallback = void Function(EsewaConfigModel config, String refId);
 
-typedef EsewsFailureCallback = void Function(String?);
+typedef EsewsFailureCallback = void Function(String errorMessage);
 
 class PayWithEsewaScreen extends StatelessWidget {
   /// EsewaConfigModel.live() or EsewaConfigModel.sandbox()
@@ -25,6 +26,30 @@ class PayWithEsewaScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      body: InAppWebView(
+        initialUrlRequest: URLRequest(url: config.uri),
+        initialOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(
+            javaScriptEnabled: true,
+            useShouldOverrideUrlLoading: true,
+          ),
+        ),
+        shouldOverrideUrlLoading: (controller, navigationAction) async {
+          final url = navigationAction.request.url.toString();
+          final uri = Uri.parse(url);
+          if (url.contains(config.successUrl) && uri.queryParameters.containsKey('refId')) {
+            final refId = uri.queryParameters['refId'];
+            onSuccess(config, refId!);
+            return NavigationActionPolicy.ALLOW;
+          } else if (url.contains(config.failureUrl) || url.contains('failure')) {
+            final errorMessage = uri.queryParameters['error'];
+            onFailure(errorMessage ?? 'Sorry your request failed');
+            return NavigationActionPolicy.ALLOW;
+          }
+          return NavigationActionPolicy.ALLOW;
+        },
+      ),
+    );
   }
 }
