@@ -1,4 +1,5 @@
 import 'package:esewa/esewa.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Pay with Esewa',
       theme: ThemeData(
+        useMaterial3: true,
         primarySwatch: Colors.green,
       ),
       home: const MyHomePage(title: 'Flutter Pay with Esewa'),
@@ -33,6 +35,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -48,35 +51,21 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PayWithEsewaScreen(
-                config: EsewaConfigModel.sandbox(
-                  amount: 10,
-                  taxAmount: 0,
-                  successUrl: 'https://example.com/success',
-                  failureUrl: 'https://example.com/failure',
-                  productId: 'product_id',
-                ),
-                onSuccess: (config, refId) {
-                  print('Payment successful');
-                  print('RefId: $refId');
-                },
-                onFailure: (errorMessage) {
-                  Navigator.pop(context);
-                  print('Payment failed');
-                  print('Error: $errorMessage');
-                },
-              ),
-            ),
-          );
-        },
+        onPressed: () {},
         isExtended: true,
         label: const Text('Pay with Esewa'),
         icon: const Icon(Icons.payment),
       ),
     );
   }
+}
+
+void showSnackBar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      duration: const Duration(seconds: 3),
+      behavior: SnackBarBehavior.floating,
+    ),
+  );
 }

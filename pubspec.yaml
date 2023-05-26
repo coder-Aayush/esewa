@@ -1,7 +1,7 @@
 name: esewa
-description: A new Flutter package project.
-version: 0.0.1
-homepage:
+description: A Flutter Package for eSewa Payment Gateway
+version: 1.0.0
+homepage: https://github.com/coder-Aayush/esewa
 
 environment:
   sdk: '>=2.19.6 <3.0.0'

@@ -11,29 +11,56 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
+Unofficial eSewa SDK for Flutter apps to pay with eSewa.
 ## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Pay with eSewa
 
 ## Getting started
+This app depends on `flutter_inappwebview` plugin. So, you need configure following things.
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+## Requirements
+
+- Dart sdk: ">=2.15.0 <4.0.0"
+- Flutter: ">=3.0.0"
+- Android: `minSdkVersion 19` and add support for `androidx` (see [AndroidX Migration](https://docs.flutter.dev/development/platform-integration/android/androidx-migration) to migrate an existing app)
+- iOS 9.0+: `--ios-language swift`, Xcode version `>= 14.3`
+- MacOS 10.11+: Xcode version `>= 14.3`
+
+## Installation
+
+Add `esewa` as a [dependency in your pubspec.yaml file](https://flutter.io/using-packages/).
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
 ```dart
-const like = 'sample';
+Navigator.push(
+    context,
+    MaterialPageRoute(
+    builder: (context) => PayWithEsewaScreen(
+      config: EsewaConfigModel.sandbox(
+        amount: 10,
+        taxAmount: 0,
+        successUrl: 'https://example.com/success',
+        failureUrl: 'https://example.com/failure',
+        productId: 'product_id',
+      ),
+      onSuccess: (config, refId) {
+        if (kDebugMode) {
+          print('Payment successful');
+        }
+        if (kDebugMode) {
+          print('RefId: $refId');
+        }
+        showSnackBar(context, 'Payment successful RefId: $refId');
+        },
+    onFailure: (errorMessage) {
+        Navigator.pop(context);
+        showSnackBar(context, errorMessage);
+        if (kDebugMode) {
+          print('Error: $errorMessage');
+        }
+      },
+    ),
+  ),
+);
 ```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
